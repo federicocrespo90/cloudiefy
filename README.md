@@ -13,10 +13,6 @@ Cloudiefy it's an UI app for catch the Weather.
  ```sh
  npm start
  ```
-# Important! [Allow Cross Origin]
-
-If you are running the app in DEV mode, you will need to get the extension called CORS on your browser and turn it on in order to get a response from Swapi's API.
-
 # Project structure
 
 ```
