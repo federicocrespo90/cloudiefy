@@ -1,0 +1,45 @@
+<div class="container">
+  <app-loader [isLoading]="isLoading" size="1.5"></app-loader>
+  <mat-card *ngIf="!isLoading">
+    <mat-card-content>
+      <div class="title">
+        <img src="assets/img/cloud.png" width="12%" alt="Cloudiefy" />
+        <mat-card-subtitle>
+            <p translate>I am Cloudiefy, a web app created to catch the weather. Please search a country:</p>
+          </mat-card-subtitle>
+      </div>
+      <div class="container">
+        <form [formGroup]="weatherForm">
+          <mat-form-field>
+            <input matInput placeholder="Country" formControlName="country">
+            <mat-error *ngIf="country.hasError('required')">
+              Country is <strong>required</strong>
+            </mat-error>
+          </mat-form-field>
+          <button mat-raised-button color="accent" (click)="isLoading = true">Go!</button>
+        </form>
+
+
+
+      
+        <!--mat-form-field>
+          <mat-select placeholder="Select">
+            <mat-option value="option">Option</mat-option>
+          </mat-select>
+        </mat-form-field-->
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card *ngIf="weather && !isLoading">
+    <mat-card-title>
+      <h5>Today:</h5>
+    </mat-card-title>
+    <mat-card-content>
+      <div class="text-sm">
+          Country: {{ weather.location.country }}
+          Local time: {{ weather.location.localTime }}
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+</div>
