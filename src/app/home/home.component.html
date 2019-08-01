@@ -1,45 +1,69 @@
 <div class="container">
   <app-loader [isLoading]="isLoading" size="1.5"></app-loader>
-  <mat-card *ngIf="!isLoading">
-    <mat-card-content>
-      <div class="title">
-        <img src="assets/img/cloud.png" width="12%" alt="Cloudiefy" />
-        <mat-card-subtitle>
-            <p translate>I am Cloudiefy, a web app created to catch the weather. Please search a country:</p>
-          </mat-card-subtitle>
-      </div>
-      <div class="container">
-        <form [formGroup]="weatherForm">
-          <mat-form-field>
-            <input matInput placeholder="Country" formControlName="country">
-            <mat-error *ngIf="country.hasError('required')">
-              Country is <strong>required</strong>
-            </mat-error>
-          </mat-form-field>
-          <button mat-raised-button color="accent" (click)="isLoading = true">Go!</button>
-        </form>
-
-
-
-      
-        <!--mat-form-field>
-          <mat-select placeholder="Select">
-            <mat-option value="option">Option</mat-option>
+  <div *ngIf="!isLoading">
+    <div class="title">
+        <img src="assets/img/cloud.png" width="7%" alt="Cloudiefy" />
+    </div>
+    <div class="container">
+      <form [formGroup]="weatherForm">
+        <mat-form-field>
+          <input matInput placeholder="Country" formControlName="country">
+          <mat-error *ngIf="country.hasError('required')">
+            Country is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field
+          width="12%">
+          <mat-select
+            placeholder="Type"
+            formControlName="type">
+            <mat-option value="c">Celcius</mat-option>
+            <mat-option value="f">Farenheit</mat-option>
           </mat-select>
-        </mat-form-field-->
-      </div>
-    </mat-card-content>
-  </mat-card>
-  <mat-card *ngIf="weather && !isLoading">
-    <mat-card-title>
-      <h5>Today:</h5>
-    </mat-card-title>
-    <mat-card-content>
-      <div class="text-sm">
-          Country: {{ weather.location.country }}
-          Local time: {{ weather.location.localTime }}
-      </div>
-    </mat-card-content>
-  </mat-card>
-
+        </mat-form-field>
+        <button mat-raised-button color="accent" (click)="isLoading = true">Go!</button>
+      </form>
+    </div>
+  </div>
+  <mat-tab-group>
+    <mat-tab label="Current">
+      <mat-card *ngIf="weather && !isLoading">
+        <mat-card-content>
+          <p>
+            {{ weather.current.condition.text }}
+          </p>
+          <img
+            [src]="weather.current.condition.icon"
+            alt="Cloudiefy icon">
+          <h2>{{ weather.current.temp_c }} C</h2>          
+          <p>
+            Feels like:
+            <strong>
+              {{ weather.current.feelslike_c }} C
+            </strong>
+          </p>
+          <p>
+            Humidity:
+            <strong>
+              {{ weather.current.humidity }} %
+            </strong>
+          </p>
+          <p>
+            Country: 
+            <strong>
+              {{ weather.location.country }}
+            </strong>
+          </p>
+          <p>
+            <strong>
+              {{ weather.location.localtime }}
+            </strong>
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </mat-tab>
+    <mat-tab label="Next days">
+      <!-- NEXT 5 DAYS -->
+    </mat-tab>
+  </mat-tab-group>
 </div>

@@ -30,22 +30,30 @@ export class HomeComponent implements OnInit {
       country: [
         'argentina',
         Validators.required
+      ],
+      type: [
+        'c',
+        Validators.required
       ]
     });
   }
 
-  ngOnInit() {
+  getByCountry(country: string, res: IWeather) {
     this.isLoading = true;
-    this.weatherService.get('argentina')
+    this.weatherService.get(country)
       .pipe(finalize(() => { this.isLoading = false; }))
       .subscribe((res: IWeather) => {
-        console.log(res);
-        debugger;
         this.weather = res;
-        this.weather.location;
-      });
+    });
   }
 
   get country() { return this.weatherForm.get('country'); }
+  get type() { return this.weatherForm.get('type'); }
 
+  ngOnInit() {
+    this.getByCountry(
+      this.weatherForm.get('country').value,
+      this.weather
+    ) 
+  }
 }
