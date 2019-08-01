@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
     this.isLoading = true;
     this.weatherService.get('argentina')
       .pipe(finalize(() => { this.isLoading = false; }))
-      .subscribe((res: Object) => {
+      .subscribe((res: IWeather) => {
         console.log(res);
         debugger;
         this.weather = res;
