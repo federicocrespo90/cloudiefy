@@ -15,6 +15,7 @@
         <mat-form-field
           width="12%">
           <mat-select
+            (selectionChange)="onTypeChange($event)"
             placeholder="Type"
             formControlName="type">
             <mat-option value="c">Celcius</mat-option>
@@ -24,46 +25,51 @@
         <button mat-raised-button color="accent" (click)="isLoading = true">Go!</button>
       </form>
     </div>
+    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+      <mat-tab label="Current">
+        <mat-card *ngIf="weather && !isLoading">
+          <mat-card-content>
+            <p>
+              {{ weather.current.condition.text }}
+            </p>
+            <img
+              [src]="weather.current.condition.icon"
+              alt="Cloudiefy icon">
+            <h2 *ngIf="type.value === 'c'">{{ weather.current.temp_c }} C</h2>
+            <h2 *ngIf="type.value === 'f'">{{ weather.current.temp_f }} F</h2>          
+            <p>
+              Feels like:
+              <strong *ngIf="type.value === 'c'">
+                {{ weather.current.feelslike_c }} C
+              </strong>
+              <strong *ngIf="type.value === 'f'">
+                {{ weather.current.feelslike_f }} F
+              </strong>
+            </p>
+            <p>
+              Humidity:
+              <strong>
+                {{ weather.current.humidity }} %
+              </strong>
+            </p>
+            <p>
+              Country: 
+              <strong>
+                {{ weather.location.country }}
+              </strong>
+            </p>
+            <p>
+              <strong>
+                {{ weather.location.localtime }}
+              </strong>
+            </p>
+          </mat-card-content>
+        </mat-card>
+      </mat-tab>
+      <mat-tab 
+        label="Next days">
+        <!-- NEXT 5 DAYS -->
+      </mat-tab>
+    </mat-tab-group>
   </div>
-  <mat-tab-group>
-    <mat-tab label="Current">
-      <mat-card *ngIf="weather && !isLoading">
-        <mat-card-content>
-          <p>
-            {{ weather.current.condition.text }}
-          </p>
-          <img
-            [src]="weather.current.condition.icon"
-            alt="Cloudiefy icon">
-          <h2>{{ weather.current.temp_c }} C</h2>          
-          <p>
-            Feels like:
-            <strong>
-              {{ weather.current.feelslike_c }} C
-            </strong>
-          </p>
-          <p>
-            Humidity:
-            <strong>
-              {{ weather.current.humidity }} %
-            </strong>
-          </p>
-          <p>
-            Country: 
-            <strong>
-              {{ weather.location.country }}
-            </strong>
-          </p>
-          <p>
-            <strong>
-              {{ weather.location.localtime }}
-            </strong>
-          </p>
-        </mat-card-content>
-      </mat-card>
-    </mat-tab>
-    <mat-tab label="Next days">
-      <!-- NEXT 5 DAYS -->
-    </mat-tab>
-  </mat-tab-group>
 </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { IWeather } from '../shared/interfaces/weather.interface'
-import { WeatherService } from '@app/home/weather.service';
+import { WeatherService } from '@app/shared/weather.service';
 
 import {
   FormBuilder,
@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   ) {
     this.weatherForm = this.fb.group({
       country: [
-        'argentina',
+        'Argentina',
         Validators.required
       ],
       type: [
@@ -38,9 +38,9 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getByCountry(country: string, res: IWeather) {
+  getWeather(country: string, days?: number) {
     this.isLoading = true;
-    this.weatherService.get(country)
+    this.weatherService.get(country, days > 1 ? days: 1)
       .pipe(finalize(() => { this.isLoading = false; }))
       .subscribe((res: IWeather) => {
         this.weather = res;
@@ -51,9 +51,22 @@ export class HomeComponent implements OnInit {
   get type() { return this.weatherForm.get('type'); }
 
   ngOnInit() {
-    this.getByCountry(
-      this.weatherForm.get('country').value,
-      this.weather
-    ) 
+    this.getWeather(
+      this.weatherForm.get('country').value
+    ); 
   }
+
+  onTypeChange(e: any) {
+    console.log(e.value)
+    this.type.setValue(e.value, {
+      onlySelf: true
+    });
+  }
+
+  onTabChange(e: any) {
+    if(e.index === 1)
+      this.getWeather(this.weatherForm.get('country').value, 5); 
+  }
+
+  showNextDays() {}
 }

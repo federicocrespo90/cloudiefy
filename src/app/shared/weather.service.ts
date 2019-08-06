@@ -9,8 +9,9 @@ export class WeatherService {
 
   constructor(private httpClient: HttpClient) { }
 
-  get(query: string): Observable<any> {
+  get(query: string, days?: number): Observable<any> {
+    let uri = days ? `q=${query}&days=${days}` : `q=${query}`;
     return this.httpClient
-      .get(`q=${query}`);
+      .get(uri);
   }
 }
