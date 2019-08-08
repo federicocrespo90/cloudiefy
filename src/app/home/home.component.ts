@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.weatherForm = this.fb.group({
-      country: [
+      location: [
         'Argentina',
         Validators.required
       ],
@@ -38,26 +38,23 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getWeather(country: string, days?: number) {
+  getWeather(location: string, days?: number) {
     this.isLoading = true;
-    this.weatherService.get(country, days > 1 ? days: 1)
+    this.weatherService.get(location, days > 1 ? days: 1)
       .pipe(finalize(() => { this.isLoading = false; }))
       .subscribe((res: IWeather) => {
         this.weather = res;
     });
   }
 
-  get country() { return this.weatherForm.get('country'); }
+  get location() { return this.weatherForm.get('location'); }
   get type() { return this.weatherForm.get('type'); }
 
   ngOnInit() {
-    this.getWeather(
-      this.weatherForm.get('country').value
-    ); 
+    this.go();
   }
 
   onTypeChange(e: any) {
-    console.log(e.value)
     this.type.setValue(e.value, {
       onlySelf: true
     });
@@ -65,7 +62,13 @@ export class HomeComponent implements OnInit {
 
   onTabChange(e: any) {
     if(e.index === 1)
-      this.getWeather(this.weatherForm.get('country').value, 5); 
+      this.getWeather(this.weatherForm.get('location').value, 5); 
+  }
+
+  go() {
+    this.getWeather(
+      this.weatherForm.get('location').value
+    ); 
   }
 
   showNextDays() {}

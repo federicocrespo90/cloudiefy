@@ -7,9 +7,9 @@
     <div class="container">
       <form [formGroup]="weatherForm">
         <mat-form-field>
-          <input matInput placeholder="Country" formControlName="country">
-          <mat-error *ngIf="country.hasError('required')">
-            Country is <strong>required</strong>
+          <input matInput placeholder="Location" formControlName="location">
+          <mat-error *ngIf="location.hasError('required')">
+            Location is <strong>required</strong>
           </mat-error>
         </mat-form-field>
         <mat-form-field
@@ -22,7 +22,7 @@
             <mat-option value="f">Farenheit</mat-option>
           </mat-select>
         </mat-form-field>
-        <button mat-raised-button color="accent" (click)="isLoading = true">Go!</button>
+        <button mat-raised-button color="accent" (click)="go()">Go!</button>
       </form>
     </div>
     <mat-tab-group (selectedTabChange)="onTabChange($event)">
