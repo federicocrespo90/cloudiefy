@@ -51,13 +51,10 @@ export class HomeComponent implements OnInit {
   get type() { return this.weatherForm.get('type'); }
 
   ngOnInit() {
-    this.getWeather(
-      this.weatherForm.get('country').value
-    ); 
+    this.go();
   }
 
   onTypeChange(e: any) {
-    console.log(e.value)
     this.type.setValue(e.value, {
       onlySelf: true
     });
@@ -66,6 +63,12 @@ export class HomeComponent implements OnInit {
   onTabChange(e: any) {
     if(e.index === 1)
       this.getWeather(this.weatherForm.get('country').value, 5); 
+  }
+
+  go() {
+    this.getWeather(
+      this.weatherForm.get('country').value
+    ); 
   }
 
   showNextDays() {}
