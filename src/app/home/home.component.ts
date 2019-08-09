@@ -18,6 +18,7 @@ import {
 
 export class HomeComponent implements OnInit {
   weather: IWeather;
+  weathers: IWeather;
   isLoading: boolean;
 
   weatherForm: FormGroup;
@@ -38,12 +39,18 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getWeather(location: string, days?: number) {
+  getWeather(location: string) {
     this.isLoading = true;
-    this.weatherService.get(location, days > 1 ? days: 1)
+    this.weatherService.get(location)
       .pipe(finalize(() => { this.isLoading = false; }))
       .subscribe((res: IWeather) => {
         this.weather = res;
+    });
+    this.weatherService.getNextDays(
+      this.weatherForm.get('location').value
+      ).pipe(finalize(() => { this.isLoading = false; }))
+      .subscribe((res: IWeather) => {
+        this.weathers = res;
     });
   }
 
@@ -58,11 +65,6 @@ export class HomeComponent implements OnInit {
     this.type.setValue(e.value, {
       onlySelf: true
     });
-  }
-
-  onTabChange(e: any) {
-    if(e.index === 1)
-      this.getWeather(this.weatherForm.get('location').value, 5); 
   }
 
   go() {

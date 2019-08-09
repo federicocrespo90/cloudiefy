@@ -25,7 +25,7 @@
         <button mat-raised-button color="accent" (click)="go()">Go!</button>
       </form>
     </div>
-    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab-group>
       <mat-tab label="Current">
         <mat-card *ngIf="weather && !isLoading">
           <mat-card-content>
@@ -68,7 +68,39 @@
       </mat-tab>
       <mat-tab 
         label="Next days">
-        <!-- NEXT 5 DAYS -->
+        <mat-card *ngIf="weathers && !isLoading">
+          <mat-grid-list cols="5" rowHeight="1:1">
+            <mat-grid-tile *ngFor="let current of weathers.forecast.forecastday">
+              <mat-card-content>
+                  <p>
+                    {{ current.day.condition.text }}
+                  </p>
+                  <img
+                    [src]="current.day.condition.icon"
+                    alt="Cloudiefy icon">
+                  <h2 *ngIf="type.value === 'c'">{{ current.day.avgtemp_c }} C</h2>
+                  <h2 *ngIf="type.value === 'f'">{{ current.day.avgtemp_f }} F</h2>
+                  <p>
+                    Humidity:
+                    <strong>
+                      {{ current.day.avghumidity }} %
+                    </strong>
+                  </p>
+                  <p>
+                    Country: 
+                    <strong>
+                      {{ weathers.location.country }}
+                    </strong>
+                  </p>
+                  <p>
+                    <strong>
+                      {{ current.date }}
+                    </strong>
+                  </p>
+                </mat-card-content>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card>
       </mat-tab>
     </mat-tab-group>
   </div>
