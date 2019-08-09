@@ -8,7 +8,7 @@ import env from './.env';
 export const environment = {
   production: false,
   version: env.npm_package_version + '-dev',
-  serverUrl: 'https://api.apixu.com/v1/current.json?key=a549c7d3ae85469393e142739192207&q=Argentina',
+  serverUrl: 'https://api.apixu.com/v1/current.json?key=a549c7d3ae85469393e142739192207',
   defaultLanguage: 'en-US',
   supportedLanguages: [
     'en-US',
