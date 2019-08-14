@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-import { IWeather } from '../shared/interfaces/weather.interface'
+import { IWeather, IWeatherCurrent, IForecastDay, IDay } from '../shared/interfaces/weather.interface'
 import { WeatherService } from '@app/shared/weather.service';
 
 import {
@@ -18,7 +18,10 @@ import {
 
 export class HomeComponent implements OnInit {
   weather: IWeather;
-  weathers: IWeather;
+  current: IWeatherCurrent;
+  extendedWeather: IWeather;
+  forecastDay: IDay[];
+  currentDate: string[];
   isLoading: boolean;
 
   weatherForm: FormGroup;
@@ -45,12 +48,14 @@ export class HomeComponent implements OnInit {
       .pipe(finalize(() => { this.isLoading = false; }))
       .subscribe((res: IWeather) => {
         this.weather = res;
+        this.current = this.weather.current;
     });
-    this.weatherService.getNextDays(
-      this.weatherForm.get('location').value
-      ).pipe(finalize(() => { this.isLoading = false; }))
+    this.weatherService.getNextDays(location)
+      .pipe(finalize(() => { this.isLoading = false; }))
       .subscribe((res: IWeather) => {
-        this.weathers = res;
+        this.extendedWeather = res;
+        this.forecastDay = this.extendedWeather.forecast.forecastday.map((item: IForecastDay) => item.day);
+        this.currentDate = this.extendedWeather.forecast.forecastday.map((item: IForecastDay) => item.date);
     });
   }
 
@@ -72,6 +77,4 @@ export class HomeComponent implements OnInit {
       this.weatherForm.get('location').value
     ); 
   }
-
-  showNextDays() {}
 }
