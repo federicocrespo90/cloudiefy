@@ -25,31 +25,31 @@
         <button mat-raised-button color="accent" (click)="go()">Go!</button>
       </form>
     </div>
-    <mat-tab-group (selectedTabChange)="onTabChange($event)">
+    <mat-tab-group>
       <mat-tab label="Current">
         <mat-card *ngIf="weather && !isLoading">
           <mat-card-content>
             <p>
-              {{ weather.current.condition.text }}
+              {{ current.condition.text }}
             </p>
             <img
-              [src]="weather.current.condition.icon"
+              [src]="current.condition.icon"
               alt="Cloudiefy icon">
-            <h2 *ngIf="type.value === 'c'">{{ weather.current.temp_c }} C</h2>
-            <h2 *ngIf="type.value === 'f'">{{ weather.current.temp_f }} F</h2>          
+            <h2 *ngIf="type.value === 'c'">{{ current.temp_c }} C</h2>
+            <h2 *ngIf="type.value === 'f'">{{ current.temp_f }} F</h2>          
             <p>
               Feels like:
               <strong *ngIf="type.value === 'c'">
-                {{ weather.current.feelslike_c }} C
+                {{ current.feelslike_c }} C
               </strong>
               <strong *ngIf="type.value === 'f'">
-                {{ weather.current.feelslike_f }} F
+                {{ current.feelslike_f }} F
               </strong>
             </p>
             <p>
               Humidity:
               <strong>
-                {{ weather.current.humidity }} %
+                {{ current.humidity }} %
               </strong>
             </p>
             <p>
@@ -68,7 +68,39 @@
       </mat-tab>
       <mat-tab 
         label="Next days">
-        <!-- NEXT 5 DAYS -->
+        <mat-card *ngIf="extendedWeather && !isLoading">
+          <mat-grid-list cols="5" rowHeight="1:1">
+            <mat-grid-tile *ngFor="let day of forecastDay; let i = index;">
+              <mat-card-content>
+                  <p>
+                    {{ day.condition.text }}
+                  </p>
+                  <img
+                    [src]="day.condition.icon"
+                    alt="Cloudiefy icon">
+                  <h2 *ngIf="type.value === 'c'">{{ day.avgtemp_c }} C</h2>
+                  <h2 *ngIf="type.value === 'f'">{{ day.avgtemp_f }} F</h2>
+                  <p>
+                    Humidity:
+                    <strong>
+                      {{ day.avghumidity }} %
+                    </strong>
+                  </p>
+                  <p>
+                    Country: 
+                    <strong>
+                      {{ extendedWeather.location.country }}
+                    </strong>
+                  </p>
+                  <p>
+                    <strong>
+                      {{ currentDate[i] }}
+                    </strong>
+                  </p>
+                </mat-card-content>
+            </mat-grid-tile>
+          </mat-grid-list>
+        </mat-card>
       </mat-tab>
     </mat-tab-group>
   </div>
