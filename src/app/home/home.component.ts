@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-import { IWeather, IWeatherCurrent, IForecastDay, IDay } from '../shared/interfaces/weather.interface'
+import { IWeather, IWeatherCurrent, IForecastDay, IDay } from '../shared/interfaces/weather.interface';
+import { IError } from '../shared/interfaces/error.interface';
 import { WeatherService } from '@app/shared/weather.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import {
   FormBuilder,
@@ -28,7 +30,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private weatherService: WeatherService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _snackBar: MatSnackBar
   ) {
     this.weatherForm = this.fb.group({
       location: [
@@ -42,21 +45,34 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 7000,
+    });
+  }
+
   getWeather(location: string) {
     this.isLoading = true;
     this.weatherService.get(location)
       .pipe(finalize(() => { this.isLoading = false; }))
-      .subscribe((res: IWeather) => {
-        this.weather = res;
-        this.current = this.weather.current;
-    });
+      .subscribe(
+        (res: IWeather) => {
+          this.weather = res;
+          this.current = this.weather.current;
+        },
+        (err: IError) => {
+          this.openSnackBar(err.error.error.message, 'Close');
+        }
+      );
     this.weatherService.getNextDays(location)
       .pipe(finalize(() => { this.isLoading = false; }))
-      .subscribe((res: IWeather) => {
-        this.extendedWeather = res;
-        this.forecastDay = this.extendedWeather.forecast.forecastday.map((item: IForecastDay) => item.day);
-        this.currentDate = this.extendedWeather.forecast.forecastday.map((item: IForecastDay) => item.date);
-    });
+      .subscribe(
+        (res: IWeather) => {
+          this.extendedWeather = res;
+          this.forecastDay = this.extendedWeather.forecast.forecastday.map((item: IForecastDay) => item.day);
+          this.currentDate = this.extendedWeather.forecast.forecastday.map((item: IForecastDay) => item.date);
+        }
+      );
   }
 
   get location() { return this.weatherForm.get('location'); }
