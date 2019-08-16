@@ -61,18 +61,7 @@ export class HomeComponent implements OnInit {
           this.current = this.weather.current;
         },
         (err: IError) => {
-          let unhandledError = 'Unhandled error';
-          let errMessage = 
-            err ?
-              err.error ?
-                err.error.error ?
-                  err.error.error.message ?
-                    err.error.error.message
-                  : unhandledError
-                  : unhandledError
-                  : unhandledError
-                  : unhandledError;
-
+          let errMessage = err.error.error.message ? err.error.error.message : 'Unhandled error';
           this.openSnackBar(errMessage, 'Close');
         }
       );
