@@ -4,6 +4,7 @@ import { IWeather, IWeatherCurrent, IForecastDay, IDay } from '../shared/interfa
 import { IError } from '../shared/interfaces/error.interface';
 import { WeatherService } from '@app/shared/weather.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { get } from 'lodash';
 
 import {
   FormBuilder,
@@ -61,8 +62,8 @@ export class HomeComponent implements OnInit {
           this.current = this.weather.current;
         },
         (err: IError) => {
-          let errMessage = err.error.error.message ? err.error.error.message : 'Unhandled error';
-          this.openSnackBar(errMessage, 'Close');
+          let message = get(err, 'error.error.message');
+          this.openSnackBar(message, 'Close');
         }
       );
     this.weatherService.getNextDays(location)
