@@ -7,12 +7,6 @@ export interface Error {
     error: ErrorInside;
 }
 
-export interface IHeaders {
-    lazyInit: any;
-    lazyUpdate: any;
-    normalizedNames: any;
-}
-
 export interface IError {
     error: Error;
     headers: IHeaders;
@@ -22,6 +16,12 @@ export interface IError {
     status: number;
     statusText: string;
     url: string;
+}
+
+export interface IHeaders {
+    lazyInit: any;
+    lazyUpdate: any;
+    normalizedNames: any;
 }
 
 

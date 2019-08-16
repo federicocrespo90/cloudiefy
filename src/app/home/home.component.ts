@@ -61,7 +61,19 @@ export class HomeComponent implements OnInit {
           this.current = this.weather.current;
         },
         (err: IError) => {
-          this.openSnackBar(err.error.error.message, 'Close');
+          let unhandledError = 'Unhandled error';
+          let errMessage = 
+            err ?
+              err.error ?
+                err.error.error ?
+                  err.error.error.message ?
+                    err.error.error.message
+                  : unhandledError
+                  : unhandledError
+                  : unhandledError
+                  : unhandledError;
+
+          this.openSnackBar(errMessage, 'Close');
         }
       );
     this.weatherService.getNextDays(location)
